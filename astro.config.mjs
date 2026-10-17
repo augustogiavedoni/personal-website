@@ -7,4 +7,8 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  markdown: {
+    // The design keeps code black and white: no syntax colours.
+    syntaxHighlight: false,
+  },
 });

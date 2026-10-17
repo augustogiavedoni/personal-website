@@ -22,6 +22,30 @@ Needs Node 20.3 or newer (`.nvmrc` pins 22).
 | `src/pages/` | One file per route |
 | `public/` | Files served as-is (photo, favicon) |
 
+## Write a post
+
+1. Draft in `drafts/` (git-ignored, so unfinished work never reaches the public history).
+2. When it's ready, move it to `src/content/posts/<url-slug>.md`. The file name becomes the URL: `/writing/<url-slug>/`.
+3. Start the file with:
+
+   ```md
+   ---
+   title: 'Post title'
+   description: 'One or two sentences, used in search results and link previews (max 200 characters).'
+   date: 2026-10-16
+   ---
+   ```
+
+   Optional fields: `updated` (a date), `lang` (`en` or `es`, default `en`), `draft: true` (shows in `npm run dev` only).
+
+4. Check it with `npm run dev`, then commit and push. The build fails if the title, description or date is missing.
+
+`src/content/posts/style-guide.md` is a permanent draft that shows every element a post can use.
+
+## Deploy
+
+Every push to `main` deploys to augustogiavedoni.com through Cloudflare Workers Builds. Other branches and pull requests get their own preview link. Settings live in `wrangler.jsonc`.
+
 ## Rules for a public repo
 
 - Secrets go in Cloudflare or GitHub secret settings, never in a file. `.env*` is ignored.

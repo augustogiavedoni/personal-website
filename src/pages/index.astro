@@ -3,14 +3,13 @@ import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
 import contributions from '../data/contributions.json';
 import LatestWriting from '../components/sections/LatestWriting.astro';
-import type { PostSummary } from '../lib/types';
+import { getPosts, toSummary } from '../lib/posts';
 import Projects from '../components/sections/Projects.astro';
 import Activity from '../components/sections/Activity.astro';
 import Work from '../components/sections/Work.astro';
 import Contact from '../components/sections/Contact.astro';
 
-// Posts arrive in stage 3; until then the section shows its empty state.
-const posts: PostSummary[] = [];
+const posts = (await getPosts()).map(toSummary);
 
 // Activity stays hidden until real contribution data exists (stage 5), so the site never shows fake numbers.
 const showActivity = contributions.days.length > 0;

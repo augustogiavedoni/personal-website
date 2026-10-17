@@ -1,14 +1,60 @@
 ---
 import Base from '../../layouts/Base.astro';
-// Stage 1 placeholder so the header link never 404s. Stage 3 lists real posts here.
+import { getPosts, postHref, isoDate, shortDate, type Post } from '../../lib/posts';
+
+const posts = await getPosts();
+
+// Group by year, newest year first; posts are already newest first.
+const years = new Map<number, Post[]>();
+for (const post of posts) {
+  const year = post.data.date.getUTCFullYear();
+  years.set(year, [...(years.get(year) ?? []), post]);
+}
 ---
 
 <Base title="Writing" description="Reflections and technical notes by Augusto Giavedoni.">
   <section class="head">
     <a class="back mono" href="/">← Home</a>
     <h1>Writing</h1>
-    <p class="lead">Nothing published yet. The first post is on its way.</p>
+    {
+      posts.length > 0 ? (
+        <p class="lead">Reflections and technical notes, newest first.</p>
+      ) : (
+        <p class="lead">Nothing published yet. The first post is on its way.</p>
+      )
+    }
   </section>
+
+  {
+    [...years].map(([year, list]) => (
+      <section class="section" aria-labelledby={`year-${year}`}>
+        <div class="year-head">
+          <div class="rule" aria-hidden="true" />
+          <h2 id={`year-${year}`} class="mono">
+            <span>{year}</span>
+            <span>
+              {list.length} {list.length === 1 ? 'post' : 'posts'}
+            </span>
+          </h2>
+        </div>
+        <ul class="list">
+          {list.map((post) => (
+            <li>
+              <a class="row" href={postHref(post)}>
+                <span class="title">
+                  {post.data.title}
+                  {post.data.draft && <span class="draft mono"> · draft</span>}
+                </span>
+                <time class="date mono" datetime={isoDate(post.data.date)}>
+                  {shortDate(post.data.date)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
 </Base>
 
 <style>
@@ -40,5 +86,65 @@ import Base from '../../layouts/Base.astro';
     font-size: 18px;
     line-height: 1.6;
     color: var(--muted);
+  }
+
+  .section {
+    padding-top: clamp(64px, 8vw, 104px);
+    gap: 24px;
+  }
+
+  .year-head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h2 {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .row:hover .title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .draft,
+  .date {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .date {
+    flex-shrink: 0;
   }
 </style>

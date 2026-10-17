@@ -8,9 +8,17 @@ interface Props {
   title?: string;
   description?: string;
   lang?: 'en' | 'es';
+  type?: 'website' | 'article';
+  published?: Date;
 }
 
-const { title, description = site.description, lang = 'en' } = Astro.props;
+const {
+  title,
+  description = site.description,
+  lang = 'en',
+  type = 'website',
+  published,
+} = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : site.name;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -25,6 +33,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="color-scheme" content="light dark" />
+    <link rel="alternate" type="application/rss+xml" title={`${site.name} · Writing`} href="/rss.xml" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? site.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="@agvdni" />
 
     <!-- Apply the saved or system theme before first paint, so dark-mode visitors never see a white flash. -->
     <script is:inline>
