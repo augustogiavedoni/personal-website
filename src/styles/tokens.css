@@ -1,0 +1,33 @@
+/* Design tokens, copied from the design canvas.
+   Light is the default; dark applies when <html data-theme="dark">. */
+:root {
+  --bg: #ffffff;
+  --fg: #0a0a0a;
+  --muted: #5e5e5e;
+  --rule: #e3e3e3;
+  --tile: #f6f6f6;
+  --code: #f5f5f5;
+  --accent: #2da44e; /* only the "now" dot and the heatmap use green */
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  --column: 640px;
+  --gutter: 24px;
+  --section-gap: clamp(72px, 9vw, 120px);
+  --target: 44px; /* minimum touch target */
+
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #0c0c0c;
+  --fg: #f0f0f0;
+  --muted: #9c9c9c;
+  --rule: #2a2a2a;
+  --tile: #151515;
+  --code: #161616;
+  --accent: #3fb950;
+
+  color-scheme: dark;
+}

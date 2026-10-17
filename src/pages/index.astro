@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+// Stage 1: the intro only. Writing, Projects, Activity, Work and Contact arrive in stage 2.
+---
+
+<Base>
+  <section class="intro">
+    <img
+      class="photo"
+      src={site.photo.src}
+      alt={site.photo.alt}
+      width={site.photo.size}
+      height={site.photo.size}
+    />
+    <h1>{site.name}</h1>
+    <p class="role mono">{site.role} · {site.city}</p>
+    <p class="bio">{site.bio}</p>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-top: clamp(72px, 11vw, 152px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .photo {
+    width: 72px;
+    height: 72px;
+    margin-bottom: 10px;
+    border-radius: 999px;
+    border: 1px solid var(--rule);
+    background: var(--tile);
+    object-fit: cover;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(34px, 4.2vw, 46px);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .role {
+    margin: 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .bio {
+    margin: 0;
+    max-width: 34em;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+</style>

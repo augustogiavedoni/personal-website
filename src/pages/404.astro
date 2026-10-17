@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not found">
+  <section class="nf">
+    <p class="code mono">404</p>
+    <h1>This page doesn’t exist.</h1>
+    <p class="lead">It may have moved, or the link may be wrong.</p>
+    <a class="home mono" href="/">← Back home</a>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    padding-top: clamp(72px, 11vw, 152px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .code {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(30px, 3.6vw, 40px);
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+
+  .lead {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .home {
+    align-self: flex-start;
+    margin-top: 12px;
+    font-size: 12px;
+    text-underline-offset: 4px;
+  }
+</style>

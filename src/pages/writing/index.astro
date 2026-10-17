@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+// Stage 1 placeholder so the header link never 404s. Stage 3 lists real posts here.
+---
+
+<Base title="Writing" description="Reflections and technical notes by Augusto Giavedoni.">
+  <section class="head">
+    <a class="back mono" href="/">← Home</a>
+    <h1>Writing</h1>
+    <p class="lead">Nothing published yet. The first post is on its way.</p>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-top: clamp(72px, 11vw, 152px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .back {
+    align-self: flex-start;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(34px, 4.2vw, 46px);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .lead {
+    margin: 0;
+    max-width: 34em;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+</style>

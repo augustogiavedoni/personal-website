@@ -1,0 +1,28 @@
+# dependencies and build output
+node_modules/
+dist/
+.astro/
+
+# secrets: never commit these
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# unpublished posts stay out of the public history
+drafts/
+
+# raw photos: only small exports belong in public/
+*.dng
+*.DNG
+*.heic
+*.HEIC
+
+# OS and editor files
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# leftovers
+.probe

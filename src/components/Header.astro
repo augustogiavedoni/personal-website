@@ -1,0 +1,56 @@
+---
+import { site } from '../data/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const onWriting = path.startsWith('/writing');
+---
+
+<header class="header">
+  <a class="mark mono" href="/" aria-label={`${site.name}, home`}>{site.initials}</a>
+  <nav aria-label="Primary" class="nav">
+    <a class="link mono" href="/writing/" aria-current={onWriting ? 'page' : undefined}>Writing</a>
+    <ThemeToggle />
+  </nav>
+</header>
+
+<style>
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 24px;
+  }
+
+  .mark {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    height: var(--target);
+    padding: 0 12px;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .link[aria-current='page'],
+  .link:hover {
+    color: var(--fg);
+  }
+</style>
