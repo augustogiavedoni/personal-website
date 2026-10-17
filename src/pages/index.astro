@@ -1,7 +1,30 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
-// Stage 1: the intro only. Writing, Projects, Activity, Work and Contact arrive in stage 2.
+import contributions from '../data/contributions.json';
+import LatestWriting from '../components/sections/LatestWriting.astro';
+import type { PostSummary } from '../lib/types';
+import Projects from '../components/sections/Projects.astro';
+import Activity from '../components/sections/Activity.astro';
+import Work from '../components/sections/Work.astro';
+import Contact from '../components/sections/Contact.astro';
+
+// Posts arrive in stage 3; until then the section shows its empty state.
+const posts: PostSummary[] = [];
+
+// Activity stays hidden until real contribution data exists (stage 5), so the site never shows fake numbers.
+const showActivity = contributions.days.length > 0;
+
+// Section numbers follow the sections actually shown.
+let n = 0;
+const next = () => ++n;
+const idx = {
+  writing: next(),
+  projects: next(),
+  activity: showActivity ? next() : 0,
+  work: next(),
+  contact: next(),
+};
 ---
 
 <Base>
@@ -17,6 +40,12 @@ import { site } from '../data/site';
     <p class="role mono">{site.role} · {site.city}</p>
     <p class="bio">{site.bio}</p>
   </section>
+
+  <LatestWriting index={idx.writing} posts={posts} />
+  <Projects index={idx.projects} />
+  {showActivity && <Activity index={idx.activity} />}
+  <Work index={idx.work} />
+  <Contact index={idx.contact} />
 </Base>
 
 <style>

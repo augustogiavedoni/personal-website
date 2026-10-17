@@ -1,0 +1,91 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+import type { PostSummary } from '../../lib/types';
+
+interface Props {
+  index: number;
+  posts: PostSummary[];
+}
+
+const { index, posts } = Astro.props;
+const latest = posts.slice(0, 3);
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+---
+
+<section class="section" aria-labelledby="latest-writing">
+  <SectionHeading id="latest-writing" label="Latest writing" index={index} />
+  {
+    latest.length > 0 ? (
+      <div class="stack">
+        <ul class="list">
+          {latest.map((post) => (
+            <li>
+              <a class="row" href={post.href}>
+                <span>{post.title}</span>
+                <time class="mono date" datetime={iso(post.date)}>
+                  {iso(post.date)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="more mono" href="/writing/">
+          All writing →
+        </a>
+      </div>
+    ) : (
+      <p class="empty">Nothing published yet. The first post is on its way.</p>
+    )
+  }
+</section>
+
+<style>
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .row:hover span:first-child {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .date {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .more {
+    align-self: flex-start;
+    font-size: 12px;
+    text-underline-offset: 4px;
+  }
+
+  .empty {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,43 @@
+---
+// The thin rule plus mono label used above every homepage section.
+interface Props {
+  label: string;
+  index: number;
+  id?: string;
+}
+
+const { label, index, id } = Astro.props;
+const number = String(index).padStart(2, '0');
+---
+
+<div class="heading">
+  <div class="rule" aria-hidden="true"></div>
+  <h2 id={id} class="mono">
+    <span>{label}</span>
+    <span aria-hidden="true">{number}</span>
+  </h2>
+</div>
+
+<style>
+  .heading {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h2 {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+</style>

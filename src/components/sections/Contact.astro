@@ -1,0 +1,52 @@
+---
+import SectionHeading from '../SectionHeading.astro';
+import { links } from '../../data/site';
+
+interface Props {
+  index: number;
+}
+
+const { index } = Astro.props;
+---
+
+<section class="section" aria-labelledby="contact">
+  <SectionHeading id="contact" label="Contact" index={index} />
+  <ul class="list">
+    {
+      links.map((link) => (
+        <li class="row">
+          <span class="label mono">{link.label}</span>
+          <a href={link.href}>{link.handle} ↗</a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 16px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    align-items: baseline;
+  }
+
+  .label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  a {
+    text-underline-offset: 4px;
+    overflow-wrap: anywhere;
+  }
+</style>

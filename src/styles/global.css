@@ -47,11 +47,19 @@ a {
   border-radius: 4px;
 }
 
-/* The single reading column, offset left as on the canvas. */
+/* The single reading column, centred. */
 .column {
   width: min(var(--column), calc(100% - 2 * var(--gutter)));
-  margin-left: max(var(--gutter), calc((100% - var(--column)) * 0.32));
+  margin-inline: auto;
   padding-bottom: 72px;
+}
+
+/* Every homepage section below the intro. */
+.section {
+  padding-top: var(--section-gap);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 
 .mono {
