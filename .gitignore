@@ -26,3 +26,6 @@ drafts/
 
 # leftovers
 .probe
+
+# Cloudflare local state
+.wrangler/

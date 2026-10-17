@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers config: serves the static Astro build from dist/.
+  // No Worker code is needed for a fully static site.
+  "name": "personal-website",
+  "compatibility_date": "2026-10-16",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
