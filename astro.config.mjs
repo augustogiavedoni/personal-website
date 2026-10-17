@@ -6,6 +6,8 @@ export default defineConfig({
   trailingSlash: 'ignore',
   build: {
     format: 'directory',
+    // The CSS is a few KB; inlining it saves a render-blocking round trip on slow phones.
+    inlineStylesheets: 'always',
   },
   markdown: {
     // The design keeps code black and white: no syntax colours.

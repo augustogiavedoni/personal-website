@@ -12,8 +12,9 @@ export interface Strings {
   home: string;
   light: string;
   dark: string;
-  toLight: string;
-  toDark: string;
+  /** Toggle names start with the visible word, so voice control users can say what they see. */
+  lightActive: string;
+  darkActive: string;
   latestWriting: string;
   allWriting: string;
   noPosts: string;
@@ -45,8 +46,8 @@ export const ui: Record<Locale, Strings> = {
     home: 'Home',
     light: 'Light',
     dark: 'Dark',
-    toLight: 'Switch to light theme',
-    toDark: 'Switch to dark theme',
+    lightActive: 'Light, switch to dark theme',
+    darkActive: 'Dark, switch to light theme',
     latestWriting: 'Latest writing',
     allWriting: 'All writing',
     noPosts: 'Nothing published yet. The first post is on its way.',
@@ -76,8 +77,8 @@ export const ui: Record<Locale, Strings> = {
     home: 'Inicio',
     light: 'Claro',
     dark: 'Oscuro',
-    toLight: 'Cambiar a tema claro',
-    toDark: 'Cambiar a tema oscuro',
+    lightActive: 'Claro, cambiar a tema oscuro',
+    darkActive: 'Oscuro, cambiar a tema claro',
     latestWriting: 'Últimos escritos',
     allWriting: 'Todos los escritos',
     noPosts: 'Todavía no hay publicaciones. La primera está en camino.',

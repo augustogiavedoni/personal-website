@@ -15,8 +15,8 @@ const onWriting = splitLocale(Astro.url.pathname).path.startsWith('/writing');
 ---
 
 <header class="header">
-  <a class="mark mono" href={localizePath('/', locale)} aria-label={`${site.name}, ${strings.home}`}
-    >{site.initials}</a
+  <a class="mark mono" href={localizePath('/', locale)}
+    >{site.initials}<span class="visually-hidden">, {site.name}, {strings.home}</span></a
   >
   <div class="nav">
     <nav aria-label="Primary">

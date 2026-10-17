@@ -14,9 +14,9 @@ const strings = t(Astro.props.locale);
   type="button"
   class="toggle mono"
   data-theme-toggle
-  data-to-light={strings.toLight}
-  data-to-dark={strings.toDark}
-  aria-label={strings.toDark}
+  data-label-light={strings.lightActive}
+  data-label-dark={strings.darkActive}
+  aria-label={strings.lightActive}
 >
   <svg class="icon sun" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
     <circle cx="12" cy="12" r="4"></circle>
@@ -75,7 +75,7 @@ const strings = t(Astro.props.locale);
 
   function apply(theme: 'light' | 'dark') {
     root.dataset.theme = theme;
-    const label = theme === 'dark' ? button?.dataset.toLight : button?.dataset.toDark;
+    const label = theme === 'dark' ? button?.dataset.labelDark : button?.dataset.labelLight;
     if (label) button?.setAttribute('aria-label', label);
   }
 
