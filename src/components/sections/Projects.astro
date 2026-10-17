@@ -1,27 +1,30 @@
 ---
 import SectionHeading from '../SectionHeading.astro';
 import { links, projects } from '../../data/site';
+import { t, type Locale } from '../../i18n';
 
 interface Props {
   index: number;
+  locale: Locale;
 }
 
-const { index } = Astro.props;
+const { index, locale } = Astro.props;
+const strings = t(locale);
 const github = links.find((link) => link.label === 'GitHub');
 ---
 
 <section class="section" aria-labelledby="projects">
-  <SectionHeading id="projects" label="Projects" index={index} />
+  <SectionHeading id="projects" label={strings.projects} index={index} />
   <ul class="list">
     {
       projects.map((project) => (
         <li>
-          <a class="card" href={project.href}>
+          <a class="card" href={project.href[locale]}>
             <span class="top">
               <span class="name">{project.name}</span>
-              <span class="tag mono">{project.tag}</span>
+              <span class="tag mono">{project.tag[locale]}</span>
             </span>
-            <span class="desc">{project.description}</span>
+            <span class="desc">{project.description[locale]}</span>
           </a>
         </li>
       ))
@@ -30,7 +33,7 @@ const github = links.find((link) => link.label === 'GitHub');
   {
     github && (
       <a class="more mono" href={github.href}>
-        All repositories on GitHub ↗
+        {strings.allRepos} ↗
       </a>
     )
   }

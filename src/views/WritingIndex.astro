@@ -1,0 +1,155 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPosts, postHref, isoDate, type Post } from '../lib/posts';
+import { formatShortDate, localizePath, t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const strings = t(locale);
+const posts = await getPosts(locale);
+
+// Group by year, newest year first; posts are already newest first.
+const years = new Map<number, Post[]>();
+for (const post of posts) {
+  const year = post.data.date.getUTCFullYear();
+  years.set(year, [...(years.get(year) ?? []), post]);
+}
+---
+
+<Base title={strings.writing} description={strings.writingDescription} lang={locale}>
+  <section class="head">
+    <a class="back mono" href={localizePath('/', locale)}>← {strings.home}</a>
+    <h1>{strings.writing}</h1>
+    {
+      posts.length > 0 ? (
+        <p class="lead">{strings.writingLead}</p>
+      ) : (
+        <p class="lead">{strings.noPosts}</p>
+      )
+    }
+  </section>
+
+  {
+    [...years].map(([year, list]) => (
+      <section class="section" aria-labelledby={`year-${year}`}>
+        <div class="year-head">
+          <div class="rule" aria-hidden="true" />
+          <h2 id={`year-${year}`} class="mono">
+            <span>{year}</span>
+            <span>{strings.posts(list.length)}</span>
+          </h2>
+        </div>
+        <ul class="list">
+          {list.map((post) => (
+            <li>
+              <a class="row" href={postHref(post)}>
+                <span class="title">
+                  {post.data.title}
+                  {post.data.draft && <span class="draft mono"> · {strings.draft}</span>}
+                </span>
+                <time class="date mono" datetime={isoDate(post.data.date)}>
+                  {formatShortDate(post.data.date, locale)}
+                </time>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</Base>
+
+<style>
+  .head {
+    padding-top: clamp(72px, 11vw, 152px);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .back {
+    align-self: flex-start;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(34px, 4.2vw, 46px);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .lead {
+    margin: 0;
+    max-width: 34em;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .section {
+    padding-top: clamp(64px, 8vw, 104px);
+    gap: 24px;
+  }
+
+  .year-head {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h2 {
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .row:hover .title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .draft,
+  .date {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .date {
+    flex-shrink: 0;
+  }
+</style>

@@ -1,16 +1,19 @@
 ---
 import SectionHeading from '../SectionHeading.astro';
 import { links } from '../../data/site';
+import { t, type Locale } from '../../i18n';
 
 interface Props {
   index: number;
+  locale: Locale;
 }
 
-const { index } = Astro.props;
+const { index, locale } = Astro.props;
+const strings = t(locale);
 ---
 
 <section class="section" aria-labelledby="contact">
-  <SectionHeading id="contact" label="Contact" index={index} />
+  <SectionHeading id="contact" label={strings.contact} index={index} />
   <ul class="list">
     {
       links.map((link) => (

@@ -11,6 +11,8 @@ const posts = defineCollection({
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
     lang: z.enum(['en', 'es']).default('en'),
+    // File name (without .md) of the same post in the other language, if there is one.
+    translation: z.string().optional(),
     // Drafts render in `npm run dev` only; production builds leave them out.
     draft: z.boolean().default(false),
   }),

@@ -3,9 +3,11 @@
 // Stage 5 adds the build-time script that fills that file with real data.
 import SectionHeading from '../SectionHeading.astro';
 import contributions from '../../data/contributions.json';
+import { formatNumber, t, type Locale } from '../../i18n';
 
 interface Props {
   index: number;
+  locale: Locale;
 }
 
 interface Day {
@@ -13,7 +15,8 @@ interface Day {
   count: number;
 }
 
-const { index } = Astro.props;
+const { index, locale } = Astro.props;
+const strings = t(locale);
 const days = contributions.days as Day[];
 const total = days.reduce((sum, day) => sum + day.count, 0);
 
@@ -23,17 +26,17 @@ const level = (n: number) => (n === 0 ? 0 : n <= 3 ? 1 : n <= 6 ? 2 : n <= 10 ? 
 const firstWeekday = days.length > 0 ? new Date(`${days[0].date}T00:00:00Z`).getUTCDay() : 0;
 const padding = Array.from({ length: firstWeekday });
 const weeks = Math.ceil((firstWeekday + days.length) / 7);
-const formatted = total.toLocaleString('en-US');
+const formatted = formatNumber(total, locale);
 ---
 
 <section class="section" aria-labelledby="activity">
-  <SectionHeading id="activity" label="Activity" index={index} />
-  <p class="total"><strong>{formatted}</strong> contributions in the last year</p>
+  <SectionHeading id="activity" label={strings.activity} index={index} />
+  <p class="total"><strong>{formatted}</strong> {strings.contributions}</p>
   <div class="scroller">
     <div
       class="grid"
       role="img"
-      aria-label={`Contribution heatmap for the last year: ${formatted} contributions`}
+      aria-label={strings.heatmapLabel(formatted)}
       style={`--weeks: ${weeks}`}
     >
       {padding.map(() => <span class="cell empty" />)}
@@ -45,13 +48,13 @@ const formatted = total.toLocaleString('en-US');
     </div>
   </div>
   <div class="legend mono" aria-hidden="true">
-    <span>Less</span>
+    <span>{strings.less}</span>
     <span class="cell l0"></span>
     <span class="cell l1"></span>
     <span class="cell l2"></span>
     <span class="cell l3"></span>
     <span class="cell l4"></span>
-    <span>More</span>
+    <span>{strings.more}</span>
   </div>
 </section>
 

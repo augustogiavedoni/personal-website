@@ -1,19 +1,22 @@
 ---
 import SectionHeading from '../SectionHeading.astro';
 import type { PostSummary } from '../../lib/types';
+import { localizePath, t, type Locale } from '../../i18n';
 
 interface Props {
   index: number;
   posts: PostSummary[];
+  locale: Locale;
 }
 
-const { index, posts } = Astro.props;
+const { index, posts, locale } = Astro.props;
+const strings = t(locale);
 const latest = posts.slice(0, 3);
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 ---
 
 <section class="section" aria-labelledby="latest-writing">
-  <SectionHeading id="latest-writing" label="Latest writing" index={index} />
+  <SectionHeading id="latest-writing" label={strings.latestWriting} index={index} />
   {
     latest.length > 0 ? (
       <div class="stack">
@@ -29,12 +32,12 @@ const iso = (d: Date) => d.toISOString().slice(0, 10);
             </li>
           ))}
         </ul>
-        <a class="more mono" href="/writing/">
-          All writing →
+        <a class="more mono" href={localizePath('/writing/', locale)}>
+          {strings.allWriting} →
         </a>
       </div>
     ) : (
-      <p class="empty">Nothing published yet. The first post is on its way.</p>
+      <p class="empty">{strings.noPosts}</p>
     )
   }
 </section>

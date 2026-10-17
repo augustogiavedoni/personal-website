@@ -1,13 +1,18 @@
 ---
+// One 404 for both languages: Cloudflare serves this page for every unknown URL.
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="Not found">
+<Base title="Not found" alternates={{ en: '/', es: '/es/' }}>
   <section class="nf">
     <p class="code mono">404</p>
     <h1>This page doesn’t exist.</h1>
     <p class="lead">It may have moved, or the link may be wrong.</p>
-    <a class="home mono" href="/">← Back home</a>
+    <p class="lead" lang="es">Esta página no existe. Puede que se haya movido o que el enlace esté mal.</p>
+    <div class="links mono">
+      <a href="/">← Back home</a>
+      <a href="/es/" lang="es">← Volvé al inicio</a>
+    </div>
   </section>
 </Base>
 
@@ -41,10 +46,15 @@ import Base from '../layouts/Base.astro';
     color: var(--muted);
   }
 
-  .home {
-    align-self: flex-start;
+  .links {
     margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
     font-size: 12px;
+  }
+
+  .links a {
     text-underline-offset: 4px;
   }
 </style>

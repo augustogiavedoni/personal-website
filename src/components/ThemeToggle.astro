@@ -1,9 +1,23 @@
 ---
 // Shows the current theme; clicking switches it and remembers the choice.
 // The theme itself is applied before first paint by the inline script in Base.astro.
+import { t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const strings = t(Astro.props.locale);
 ---
 
-<button type="button" class="toggle mono" data-theme-toggle aria-label="Switch to dark theme">
+<button
+  type="button"
+  class="toggle mono"
+  data-theme-toggle
+  data-to-light={strings.toLight}
+  data-to-dark={strings.toDark}
+  aria-label={strings.toDark}
+>
   <svg class="icon sun" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
     <circle cx="12" cy="12" r="4"></circle>
     <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
@@ -11,8 +25,8 @@
   <svg class="icon moon" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path>
   </svg>
-  <span class="name light">Light</span>
-  <span class="name dark">Dark</span>
+  <span class="name light">{strings.light}</span>
+  <span class="name dark">{strings.dark}</span>
 </button>
 
 <style>
@@ -61,10 +75,8 @@
 
   function apply(theme: 'light' | 'dark') {
     root.dataset.theme = theme;
-    button?.setAttribute(
-      'aria-label',
-      theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
-    );
+    const label = theme === 'dark' ? button?.dataset.toLight : button?.dataset.toDark;
+    if (label) button?.setAttribute('aria-label', label);
   }
 
   apply(root.dataset.theme === 'dark' ? 'dark' : 'light');

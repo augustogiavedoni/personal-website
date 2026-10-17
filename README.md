@@ -16,7 +16,9 @@ Needs Node 20.3 or newer (`.nvmrc` pins 22).
 
 | Path | What |
 | --- | --- |
-| `src/data/site.ts` | Name, bio, links, work history, projects. Edit copy here. |
+| `src/data/site.ts` | Name, bio, links, work history, projects, in both languages. Edit copy here. |
+| `src/i18n/index.ts` | Interface text in English and Spanish, plus path and date helpers |
+| `src/views/` | Each page, written once and rendered in both languages by `src/pages/` and `src/pages/es/` |
 | `src/styles/tokens.css` | Colours, fonts and spacing for both themes |
 | `src/layouts/Base.astro` | Page shell, metadata and the no-flash theme script |
 | `src/pages/` | One file per route |
@@ -36,7 +38,9 @@ Needs Node 20.3 or newer (`.nvmrc` pins 22).
    ---
    ```
 
-   Optional fields: `updated` (a date), `lang` (`en` or `es`, default `en`), `draft: true` (shows in `npm run dev` only).
+   Optional fields: `updated` (a date), `lang` (`en` or `es`, default `en`), `draft: true` (shows in `npm run dev` only), and `translation` (the file name of the same post in the other language, so the two link to each other).
+
+   Spanish posts set `lang: es` and appear under `/es/writing/`. Write them in Rioplatense Spanish (voseo).
 
 4. Check it with `npm run dev`, then commit and push. The build fails if the title, description or date is missing.
 

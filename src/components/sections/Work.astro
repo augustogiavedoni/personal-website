@@ -1,16 +1,19 @@
 ---
 import SectionHeading from '../SectionHeading.astro';
 import { work } from '../../data/site';
+import { t, type Locale } from '../../i18n';
 
 interface Props {
   index: number;
+  locale: Locale;
 }
 
-const { index } = Astro.props;
+const { index, locale } = Astro.props;
+const strings = t(locale);
 ---
 
 <section class="section" aria-labelledby="work">
-  <SectionHeading id="work" label="Work" index={index} />
+  <SectionHeading id="work" label={strings.work} index={index} />
   <div class="timeline">
     <div class="line" aria-hidden="true"></div>
     <ol class="list">
@@ -27,7 +30,7 @@ const { index } = Astro.props;
               <div class="text">
                 <span class="company">
                   <span>{job.company}</span>
-                  {job.current && <span class="now mono">now</span>}
+                  {job.current && <span class="now mono">{strings.now}</span>}
                 </span>
                 <span class="title">{job.title}</span>
               </div>

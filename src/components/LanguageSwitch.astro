@@ -1,0 +1,63 @@
+---
+// EN / ES links. Each points to the same page in that language, or that language's closest page.
+import { locales, t, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  targets: Record<Locale, string>;
+}
+
+const { locale, targets } = Astro.props;
+---
+
+<nav class="switch mono" aria-label={t(locale).languageGroup}>
+  {
+    locales.map((code, i) => (
+      <>
+        {i > 0 && (
+          <span class="sep" aria-hidden="true">
+            /
+          </span>
+        )}
+        <a
+          href={targets[code]}
+          hreflang={code}
+          lang={code}
+          aria-current={code === locale ? 'true' : undefined}
+          aria-label={t(code).languageName}
+        >
+          {code.toUpperCase()}
+        </a>
+      </>
+    ))
+  }
+</nav>
+
+<style>
+  .switch {
+    display: inline-flex;
+    align-items: center;
+    height: var(--target);
+    font-size: 12px;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--target);
+    min-width: 32px;
+    padding: 0 4px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  a:hover,
+  a[aria-current='true'] {
+    color: var(--fg);
+  }
+
+  .sep {
+    color: var(--rule);
+  }
+</style>

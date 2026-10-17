@@ -1,12 +1,19 @@
 ---
 import { site } from '../data/site';
+import { localizePath, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
 const year = new Date().getFullYear();
+const rss = localizePath('/rss.xml', Astro.props.locale);
 ---
 
 <footer class="footer mono">
   <span>© {year} {site.name}</span>
   <span class="right">
-    <a href="/rss.xml">RSS</a>
+    <a href={rss}>RSS</a>
     <span aria-hidden="true">·</span>
     <span>{site.city}</span>
   </span>
