@@ -10,6 +10,8 @@ interface Props {
   lang?: 'en' | 'es';
   type?: 'website' | 'article';
   published?: Date;
+  /** Path to a 1200×630 preview image; defaults to the site card. */
+  image?: string;
 }
 
 const {
@@ -18,9 +20,11 @@ const {
   lang = 'en',
   type = 'website',
   published,
+  image = '/og.png',
 } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : site.name;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -41,7 +45,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={site.name} />
     {published && <meta property="article:published_time" content={published.toISOString()} />}
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title ?? site.name} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@agvdni" />
 
     <!-- Apply the saved or system theme before first paint, so dark-mode visitors never see a white flash. -->
