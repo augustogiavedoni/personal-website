@@ -9,6 +9,7 @@ import Projects from '../components/sections/Projects.astro';
 import Activity from '../components/sections/Activity.astro';
 import Work from '../components/sections/Work.astro';
 import Contact from '../components/sections/Contact.astro';
+import Boot from '../components/Boot.astro';
 
 interface Props {
   locale: Locale;
@@ -32,7 +33,8 @@ const idx = {
 };
 ---
 
-<Base lang={locale}>
+<Base lang={locale} boot>
+  <Boot slot="before" />
   <section class="intro">
     <img
       class="photo"

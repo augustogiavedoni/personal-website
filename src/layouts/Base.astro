@@ -18,6 +18,8 @@ interface Props {
    * Posts pass only the versions that exist.
    */
   alternates?: Partial<Record<Locale, string>>;
+  /** Play the boot intro (home page only). */
+  boot?: boolean;
 }
 
 const { path } = splitLocale(Astro.url.pathname);
@@ -28,6 +30,7 @@ const {
   type = 'website',
   published,
   image = '/og.png',
+  boot = false,
   alternates = Object.fromEntries(locales.map((code) => [code, localizePath(path, code)])),
 } = Astro.props;
 
@@ -91,8 +94,22 @@ const switchTargets = Object.fromEntries(
         document.documentElement.dataset.theme = theme;
       })();
     </script>
+    {
+      boot && (
+        <script is:inline>
+          (function () {
+            // Boot on every home page load, but never with reduced motion. Decided before paint.
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+              document.documentElement.classList.add('booting');
+            }
+          })();
+        </script>
+      )
+    }
   </head>
   <body>
+    <a class="skip" href="#main">{lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+    <slot name="before" />
     <div class="column">
       <Header locale={lang} switchTargets={switchTargets} />
       <main id="main">

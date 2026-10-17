@@ -1,0 +1,157 @@
+---
+// The boot intro: AG and a progress bar on black, then the black fades away while the page
+// settles into place, like an iPhone finishing its start-up.
+// Shown on every load of the home page, never with reduced motion. Whether it shows is decided
+// before first paint by the inline script Base.astro adds when `boot` is set.
+import { site } from '../data/site';
+---
+
+<div class="boot" data-boot aria-hidden="true">
+  <span class="logo mono">{site.initials}</span>
+  <span class="bar"></span>
+</div>
+
+<style>
+  /* Hidden unless the head script marked this visit as booting. Without JavaScript it never shows. */
+  .boot {
+    display: none;
+  }
+
+  :global(html.booting) .boot {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background: #000;
+    color: #ededed;
+    cursor: pointer;
+    transition: opacity 520ms cubic-bezier(0.32, 0.72, 0, 1);
+    /* Safety net: gone after 2.2s even if the script below never runs. */
+    animation: boot-safety 0s 2.2s forwards;
+  }
+
+  .logo {
+    font-size: clamp(48px, 12vw, 96px);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    animation: logo-in 350ms ease-out both;
+    transition:
+      transform 520ms cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 320ms ease-out;
+  }
+
+  .bar {
+    position: absolute;
+    left: 50%;
+    bottom: 24%;
+    width: min(160px, 40vw);
+    height: 2px;
+    transform: translateX(-50%);
+    background: #262626;
+    border-radius: 2px;
+    overflow: hidden;
+    transition: opacity 200ms ease-out;
+  }
+
+  .bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #ededed;
+    transform-origin: left;
+    animation: load 480ms 80ms cubic-bezier(0.5, 0, 0.2, 1) both;
+  }
+
+  /* The page waits slightly enlarged and invisible behind the black... */
+  :global(html.booting .column) {
+    opacity: 0;
+    transform: scale(1.04);
+    transform-origin: 50% 30vh;
+    transition:
+      opacity 520ms cubic-bezier(0.32, 0.72, 0, 1),
+      transform 620ms cubic-bezier(0.32, 0.72, 0, 1);
+    animation: page-safety 0s 2.2s forwards;
+  }
+
+  /* ...then the black fades out, the logo drifts forward, and the page settles into place. */
+  :global(html.booting.revealing) .boot {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  :global(html.booting.revealing) .logo {
+    transform: scale(1.12);
+    opacity: 0;
+  }
+
+  :global(html.booting.revealing) .bar {
+    opacity: 0;
+  }
+
+  :global(html.booting.revealing .column) {
+    opacity: 1;
+    transform: none;
+  }
+
+  @keyframes logo-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes load {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes boot-safety {
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @keyframes page-safety {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+  const boot = document.querySelector<HTMLElement>('[data-boot]');
+
+  if (boot && root.classList.contains('booting')) {
+    const timers: number[] = [];
+    const clear = () => timers.forEach((id) => window.clearTimeout(id));
+
+    const finish = () => {
+      clear();
+      root.classList.remove('booting', 'revealing');
+    };
+
+    const reveal = () => {
+      if (!root.classList.contains('booting') || root.classList.contains('revealing')) return;
+      clear();
+      root.classList.add('revealing');
+      timers.push(window.setTimeout(finish, 640));
+    };
+
+    // Logo and bar ≈ 0.56s, fade ≈ 0.6s. Any tap, click or key skips straight to the fade.
+    timers.push(window.setTimeout(reveal, 560));
+    boot.addEventListener('pointerdown', reveal);
+    window.addEventListener('keydown', reveal, { once: true });
+  }
+</script>

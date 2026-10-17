@@ -66,6 +66,25 @@ a {
   font-family: var(--font-mono);
 }
 
+/* Keyboard users can jump past the header; the link appears only when focused. */
+.skip {
+  position: absolute;
+  left: 16px;
+  top: -100px;
+  z-index: 200;
+  padding: 10px 14px;
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.skip:focus {
+  top: 16px;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
