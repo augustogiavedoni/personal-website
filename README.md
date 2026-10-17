@@ -46,6 +46,18 @@ Needs Node 20.3 or newer (`.nvmrc` pins 22).
 
 `src/content/posts/style-guide.md` is a permanent draft that shows every element a post can use.
 
+## Contribution heatmap
+
+`src/data/contributions.json` holds the daily contribution counts of the personal, Paigo and Telar GitHub accounts, summed. The Activity section stays hidden while it's empty.
+
+A GitHub Action (`.github/workflows/contributions.yml`) refreshes it every morning and commits the file if it changed, which triggers a normal deploy. Run it by hand from the Actions tab, or locally:
+
+```sh
+CONTRIBUTIONS_TOKEN=$(gh auth token) node scripts/fetch-contributions.mjs
+```
+
+If a fetch fails, nothing is written and the site keeps the last good data.
+
 ## Deploy
 
 Every push to `main` deploys to augustogiavedoni.com through Cloudflare Workers Builds. Other branches and pull requests get their own preview link. Settings live in `wrangler.jsonc`.
